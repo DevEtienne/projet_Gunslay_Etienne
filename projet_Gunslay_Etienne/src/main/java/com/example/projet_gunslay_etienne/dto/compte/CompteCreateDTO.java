@@ -19,12 +19,10 @@ public class CompteCreateDTO {
     private BigDecimal soldeInitial;
 
     @NotBlank
-    private String typeCompte; // "COURANT" ou "EPARGNE"
+    private String typeCompte;
 
-    // Optionnel pour compte courant
     private BigDecimal decouvert;
 
-    // Optionnel pour compte épargne
     private BigDecimal tauxRemuneration;
 
     @NotNull

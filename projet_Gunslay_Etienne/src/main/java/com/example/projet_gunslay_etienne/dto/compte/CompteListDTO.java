@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class CompteListDTO {
 
     private String numeroCompte;
-    private String typeCompte;   // "COURANT" ou "EPARGNE"
+    private String typeCompte;
     private BigDecimal solde;
     private Long clientId;
 }
