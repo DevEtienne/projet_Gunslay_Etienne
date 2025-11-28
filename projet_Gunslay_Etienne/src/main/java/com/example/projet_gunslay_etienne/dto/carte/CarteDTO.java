@@ -12,5 +12,5 @@ public class CarteDTO {
     private Long id;
     private TypeCarte typeCarte;
     private boolean active;
-    private String numeroCompte; // numéro du compte courant
+    private String numeroCompte;
 }

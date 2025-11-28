@@ -12,11 +12,18 @@ public class CarteMapper {
     public CarteDTO toDto(CarteBancaire carte) {
         if (carte == null) return null;
 
+        CompteCourant compteCourant = carte.getCompteCourant();
+
+        String numeroCompte = null;
+        if (compteCourant != null) {
+            numeroCompte = compteCourant.getNumeroCompte();
+        }
+
         return CarteDTO.builder()
                 .id(carte.getId())
                 .typeCarte(carte.getTypeCarte())
                 .active(carte.isActive())
-                .numeroCompte(carte.getCompteCourant().getNumeroCompte())
+                .numeroCompte(numeroCompte)
                 .build();
     }
 

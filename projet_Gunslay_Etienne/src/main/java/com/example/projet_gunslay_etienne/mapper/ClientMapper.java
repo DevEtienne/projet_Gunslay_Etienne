@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClientMapper {
 
-    // =========  ENTITY → DTO  =========
-
     public ClientDTO toDto(Client entity) {
         if (entity == null) return null;
 
@@ -36,9 +34,6 @@ public class ClientMapper {
                 .build();
     }
 
-
-    // =========  DTO → ENTITY  =========
-
     public Client fromCreateDto(ClientCreateDTO dto) {
         return Client.builder()
                 .nom(dto.getNom())
@@ -50,7 +45,7 @@ public class ClientMapper {
                 .build();
     }
 
-    public void updateEntity(Client entity, ClientUpdateDTO dto) {
+    public void updateEntityFromDto(ClientUpdateDTO dto, Client entity) {
         entity.setNom(dto.getNom());
         entity.setPrenom(dto.getPrenom());
         entity.setAdresse(dto.getAdresse());

@@ -20,6 +20,6 @@ public class CompteCourant extends CompteBancaire {
     @Column(name = "decouvert")
     private BigDecimal decouvert;
 
-    @OneToMany(mappedBy = "compteCourant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "compteCourant")
     private List<CarteBancaire> cartes = new ArrayList<>();
 }

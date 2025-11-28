@@ -1,13 +1,12 @@
 package com.example.projet_gunslay_etienne.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
 @Table(name = "clients")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,21 +16,25 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank @Size(max = 50)
+    @Column(name = "nom", nullable = false, length = 50)
     private String nom;
 
-    @NotBlank @Size(max = 50)
+    @Column(name = "prenom", nullable = false, length = 50)
     private String prenom;
 
-    @NotBlank @Size(max = 255)
+    @Column(name = "adresse", nullable = false)
     private String adresse;
 
-    @NotBlank @Size(max = 10)
+    @Column(name = "code_postal", nullable = false, length = 10)
     private String codePostal;
 
-    @NotBlank @Size(max = 100)
+    @Column(name = "ville", nullable = false, length = 100)
     private String ville;
 
-    @NotBlank @Size(max = 20)
+    @Column(name = "telephone", nullable = false, length = 20)
     private String telephone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conseiller_id")
+    private Conseiller conseiller;
 }

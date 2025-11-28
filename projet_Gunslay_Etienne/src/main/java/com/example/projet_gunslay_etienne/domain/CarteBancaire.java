@@ -25,7 +25,7 @@ public class CarteBancaire {
     private boolean active = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compte_courant_id", nullable = false)
+    @JoinColumn(name = "compte_courant_id") // pas nullable = false
     private CompteCourant compteCourant;
 }
 
