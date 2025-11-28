@@ -1,12 +1,12 @@
 package com.example.projet_gunslay_etienne.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("EPARGNE")
@@ -15,11 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CompteEpargne extends CompteBancaire {
 
-    @Column(name = "taux_remuneration")
+    // taux de rémunération en %
     private BigDecimal tauxRemuneration;
-
-    public CompteEpargne(Long id, String numeroCompte, BigDecimal solde, LocalDate dateOuverture, BigDecimal tauxRemuneration) {
-        super(id, numeroCompte, solde, dateOuverture);
-        this.tauxRemuneration = tauxRemuneration;
-    }
 }

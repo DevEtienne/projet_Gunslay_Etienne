@@ -1,7 +1,9 @@
 package com.example.projet_gunslay_etienne.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,7 +15,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public abstract class CompteBancaire {
 
     @Id
@@ -28,5 +29,8 @@ public abstract class CompteBancaire {
 
     @Column(name = "date_ouverture", nullable = false)
     private LocalDate dateOuverture;
-}
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+}

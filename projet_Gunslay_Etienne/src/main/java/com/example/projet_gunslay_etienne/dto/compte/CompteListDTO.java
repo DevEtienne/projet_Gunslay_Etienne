@@ -1,6 +1,9 @@
-package com.example.projet_gunslay_etienne.dto.compte;
+package com.example.projet_gunslay_etienne.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -11,6 +14,7 @@ import java.math.BigDecimal;
 public class CompteListDTO {
 
     private String numeroCompte;
-    private String typeCompte;   // COURANT / EPARGNE
+    private String typeCompte;   // "COURANT" ou "EPARGNE"
     private BigDecimal solde;
+    private Long clientId;
 }

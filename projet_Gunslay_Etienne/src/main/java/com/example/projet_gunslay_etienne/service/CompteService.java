@@ -1,11 +1,14 @@
 package com.example.projet_gunslay_etienne.service;
 
+import com.example.projet_gunslay_etienne.domain.Client;
 import com.example.projet_gunslay_etienne.domain.CompteBancaire;
 import com.example.projet_gunslay_etienne.domain.CompteCourant;
 import com.example.projet_gunslay_etienne.domain.CompteEpargne;
-import com.example.projet_gunslay_etienne.dto.compte.CompteDTO;
-import com.example.projet_gunslay_etienne.dto.compte.CompteListDTO;
+import com.example.projet_gunslay_etienne.dto.CompteDTO;
+import com.example.projet_gunslay_etienne.dto.CompteListDTO;
+import com.example.projet_gunslay_etienne.dto.compte.CompteCreateDTO;
 import com.example.projet_gunslay_etienne.mapper.CompteMapper;
+import com.example.projet_gunslay_etienne.repository.ClientRepository;
 import com.example.projet_gunslay_etienne.repository.CompteBancaireRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.List;
 public class CompteService {
 
     private final CompteBancaireRepository compteRepository;
+    private final ClientRepository clientRepository;
     private final CompteMapper compteMapper;
 
     public List<CompteListDTO> findAll() {
@@ -29,11 +33,19 @@ public class CompteService {
                 .toList();
     }
 
-    public CompteDTO getByNumero(String numeroCompte) {
+    public CompteDTO findByNumero(String numeroCompte) {
         CompteBancaire compte = compteRepository.findByNumeroCompte(numeroCompte)
                 .orElseThrow(() -> new RuntimeException("Compte non trouvé : " + numeroCompte));
-
         return compteMapper.toDto(compte);
+    }
+
+    public CompteDTO create(CompteCreateDTO dto) {
+        Client client = clientRepository.findById(dto.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client non trouvé : " + dto.getClientId()));
+
+        CompteBancaire compte = compteMapper.fromCreateDto(dto, client);
+        CompteBancaire saved = compteRepository.save(compte);
+        return compteMapper.toDto(saved);
     }
 
     public CompteDTO credit(String numeroCompte, BigDecimal montant) {
@@ -42,7 +54,6 @@ public class CompteService {
 
         compte.setSolde(compte.getSolde().add(montant));
         CompteBancaire saved = compteRepository.save(compte);
-
         return compteMapper.toDto(saved);
     }
 
@@ -65,7 +76,10 @@ public class CompteService {
 
         compte.setSolde(nouveauSolde);
         CompteBancaire saved = compteRepository.save(compte);
-
         return compteMapper.toDto(saved);
+    }
+
+    public void deleteByNumero(String numeroCompte) {
+        compteRepository.deleteByNumeroCompte(numeroCompte);
     }
 }

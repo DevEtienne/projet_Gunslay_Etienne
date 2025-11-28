@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CompteBancaireRepository extends JpaRepository<CompteBancaire, Long> {
 
     Optional<CompteBancaire> findByNumeroCompte(String numeroCompte);
+
+    void deleteByNumeroCompte(String numeroCompte);
 }

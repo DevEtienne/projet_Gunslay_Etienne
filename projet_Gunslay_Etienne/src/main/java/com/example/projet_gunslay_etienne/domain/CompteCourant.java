@@ -1,12 +1,12 @@
 package com.example.projet_gunslay_etienne.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("COURANT")
@@ -15,11 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CompteCourant extends CompteBancaire {
 
-    @Column(name = "decouvert")
+    // autorisation de découvert
     private BigDecimal decouvert;
-
-    public CompteCourant(Long id, String numeroCompte, BigDecimal solde, LocalDate dateOuverture, BigDecimal decouvert) {
-        super(id, numeroCompte, solde, dateOuverture);
-        this.decouvert = decouvert;
-    }
 }
