@@ -1,9 +1,9 @@
 package com.example.projet_gunslay_etienne.controller;
 
-import com.example.projet_gunslay_etienne.dto.ClientCreateDTO;
-import com.example.projet_gunslay_etienne.dto.ClientDTO;
-import com.example.projet_gunslay_etienne.dto.ClientListDTO;
-import com.example.projet_gunslay_etienne.dto.ClientUpdateDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientCreateDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientListDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientUpdateDTO;
 import com.example.projet_gunslay_etienne.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

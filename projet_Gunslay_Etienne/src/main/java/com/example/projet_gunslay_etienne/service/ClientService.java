@@ -1,7 +1,10 @@
 package com.example.projet_gunslay_etienne.service;
 
 import com.example.projet_gunslay_etienne.domain.Client;
-import com.example.projet_gunslay_etienne.dto.*;
+import com.example.projet_gunslay_etienne.dto.client.ClientCreateDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientListDTO;
+import com.example.projet_gunslay_etienne.dto.client.ClientUpdateDTO;
 import com.example.projet_gunslay_etienne.mapper.ClientMapper;
 import com.example.projet_gunslay_etienne.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;

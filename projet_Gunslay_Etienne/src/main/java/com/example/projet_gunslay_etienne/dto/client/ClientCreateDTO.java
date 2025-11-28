@@ -1,4 +1,4 @@
-package com.example.projet_gunslay_etienne.dto;
+package com.example.projet_gunslay_etienne.dto.client;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientUpdateDTO {
+public class ClientCreateDTO {
 
     @NotBlank @Size(max = 50)
     private String nom;
@@ -28,4 +28,3 @@ public class ClientUpdateDTO {
     @NotBlank @Size(max = 20)
     private String telephone;
 }
-

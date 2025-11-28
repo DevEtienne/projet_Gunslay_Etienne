@@ -1,4 +1,4 @@
-package com.example.projet_gunslay_etienne.dto;
+package com.example.projet_gunslay_etienne.dto.client;
 
 import lombok.*;
 
