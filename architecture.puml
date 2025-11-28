@@ -1,0 +1,153 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' =========================
+'   COUCHE DOMAINE (Entities)
+' =========================
+package "Domaine (Entities)" {
+
+  class Client <<Entity>> {
+    - id : Long
+    - nom : String
+    - prenom : String
+    - adresse : String
+    - codePostal : String
+    - ville : String
+    - telephone : String
+  }
+
+  abstract class CompteBancaire <<Entity>> {
+    - id : Long
+    - numeroCompte : String
+    - solde : BigDecimal
+    - dateOuverture : LocalDate
+  }
+
+  class CompteCourant <<Entity>> extends CompteBancaire {
+    - decouvert : BigDecimal
+  }
+
+  class CompteEpargne <<Entity>> extends CompteBancaire {
+    - tauxRemuneration : BigDecimal
+  }
+
+  enum TypeCarte {
+    VISA_ELECTRON
+    VISA_PREMIER
+  }
+
+  class CarteBancaire <<Entity>> {
+    - id : Long
+    - typeCarte : TypeCarte
+    - active : boolean
+  }
+
+  ' Relations domaine
+  Client "1" o-- "0..1" CompteCourant
+  Client "1" o-- "0..1" CompteEpargne
+  CompteCourant "1" o-- "0..1" CarteBancaire
+  CarteBancaire "*" --> TypeCarte
+}
+
+' =========================
+'   COUCHE REPOSITORY
+' =========================
+package "Repositories" {
+
+  interface ClientRepository <<Repository>> {
+    ' JpaRepository<Client, Long>
+  }
+
+  interface CompteBancaireRepository <<Repository>> {
+    ' JpaRepository<CompteBancaire, Long>
+    ' findByNumeroCompte(numero : String)
+  }
+
+  interface CarteBancaireRepository <<Repository>> {
+    ' JpaRepository<CarteBancaire, Long>
+  }
+}
+
+' =========================
+'     COUCHE SERVICE
+' =========================
+package "Services" {
+
+  class ClientService {
+    + createClient(client : Client) : Client
+    + updateClient(id : Long, client : Client) : Client
+    + getClient(id : Long) : Client
+    + deleteClient(id : Long) : void
+    + listClients() : List<Client>
+  }
+
+  class VirementService {
+    + virement(compteDebiteur : CompteBancaire, compteReceveur : CompteBancaire, montant : BigDecimal) : void
+  }
+
+  class SimulationCreditService {
+    + simulationCredit(client : Client, montant : BigDecimal, dureeMois : int) : boolean
+  }
+
+  class AuditService {
+    + auditClients() : List<CompteBancaire>
+    + isConforme(compte : CompteBancaire) : boolean
+  }
+
+  class CompteService {
+    + credit(compte : CompteBancaire, montant : BigDecimal) : void
+    + debit(compte : CompteBancaire, montant : BigDecimal) : void
+  }
+}
+
+' =========================
+'   COUCHE CONTROLLER (REST)
+' =========================
+package "Controllers" {
+
+  class ClientController <<Controller>> {
+    + getClients() : List<Client>
+    + getClient(id : Long) : Client
+    + createClient(client : Client) : Client
+    + updateClient(id : Long, client : Client) : Client
+    + deleteClient(id : Long) : void
+  }
+
+  class VirementController <<Controller>> {
+    + effectuerVirement(numDebiteur : String, numReceveur : String, montant : BigDecimal) : void
+  }
+
+  class SimulationCreditController <<Controller>> {
+    + simulerCredit(clientId : Long, montant : BigDecimal, dureeMois : int) : boolean
+  }
+
+  class AuditController <<Controller>> {
+    + getAudit() : List<CompteBancaire>
+  }
+
+  class CompteController <<Controller>> {
+    + credit(numeroCompte : String, montant : BigDecimal) : void
+    + debit(numeroCompte : String, montant : BigDecimal) : void
+  }
+}
+
+' =========================
+'   DEPENDANCES ENTRE COUCHES
+' =========================
+
+' Controllers -> Services
+ClientController ..> ClientService
+VirementController ..> VirementService
+SimulationCreditController ..> SimulationCreditService
+AuditController ..> AuditService
+CompteController ..> CompteService
+
+' Services -> Repositories
+ClientService ..> ClientRepository
+CompteService ..> CompteBancaireRepository
+VirementService ..> CompteBancaireRepository
+SimulationCreditService ..> ClientRepository
+SimulationCreditService ..> CompteBancaireRepository
+AuditService ..> CompteBancaireRepository
+
+@enduml
