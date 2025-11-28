@@ -6,14 +6,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientDTO {
+public class ClientListDTO {
 
     private Long id;
     private String nom;
     private String prenom;
-    private String adresse;
-    private String codePostal;
-    private String ville;
-    private String telephone;
 }
 
