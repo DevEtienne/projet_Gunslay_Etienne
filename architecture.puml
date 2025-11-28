@@ -6,6 +6,18 @@ skinparam classAttributeIconSize 0
 ' =========================
 package "Domaine (Entities)" {
 
+  class Agence <<Entity>> {
+    - id : Long
+    - numeroAgence : String
+    - dateCreation : LocalDate
+  }
+
+  class Conseiller <<Entity>> {
+    - id : Long
+    - nom : String
+    - prenom : String
+  }
+
   class Client <<Entity>> {
     - id : Long
     - nom : String
@@ -14,6 +26,7 @@ package "Domaine (Entities)" {
     - codePostal : String
     - ville : String
     - telephone : String
+    - conseiller : Conseiller
   }
 
   abstract class CompteBancaire <<Entity>> {
@@ -43,9 +56,13 @@ package "Domaine (Entities)" {
   }
 
   ' Relations domaine
+  Agence "1" o-- "*" Conseiller
+  Conseiller "1" o-- "0..10" Client
+
   Client "1" o-- "0..1" CompteCourant
   Client "1" o-- "0..1" CompteEpargne
-  CompteCourant "1" o-- "0..1" CarteBancaire
+
+  CompteCourant "1" o-- "*" CarteBancaire
   CarteBancaire "*" --> TypeCarte
 }
 
@@ -54,8 +71,18 @@ package "Domaine (Entities)" {
 ' =========================
 package "Repositories" {
 
+  interface AgenceRepository <<Repository>> {
+    ' JpaRepository<Agence, Long>
+    ' findByNumeroAgence(numero : String)
+  }
+
+  interface ConseillerRepository <<Repository>> {
+    ' JpaRepository<Conseiller, Long>
+  }
+
   interface ClientRepository <<Repository>> {
     ' JpaRepository<Client, Long>
+    ' long countByConseiller_Id(conseillerId : Long)
   }
 
   interface CompteBancaireRepository <<Repository>> {
@@ -74,11 +101,18 @@ package "Repositories" {
 package "Services" {
 
   class ClientService {
-    + createClient(client : Client) : Client
-    + updateClient(id : Long, client : Client) : Client
-    + getClient(id : Long) : Client
+    + createClient(...)
+    + updateClient(id : Long, ...)
+    + getClient(id : Long)
     + deleteClient(id : Long) : void
     + listClients() : List<Client>
+  }
+
+  class ConseillerService {
+    + create(conseillerCreateDTO) : ConseillerDTO
+    + findAll() : List<ConseillerDTO>
+    + findById(id : Long) : ConseillerDTO
+    + affecterClient(conseillerId : Long, clientId : Long) : void
   }
 
   class VirementService {
@@ -108,9 +142,16 @@ package "Controllers" {
   class ClientController <<Controller>> {
     + getClients() : List<Client>
     + getClient(id : Long) : Client
-    + createClient(client : Client) : Client
-    + updateClient(id : Long, client : Client) : Client
+    + createClient(...) : Client
+    + updateClient(id : Long, ...) : Client
     + deleteClient(id : Long) : void
+  }
+
+  class ConseillerController <<Controller>> {
+    + createConseiller(...) : ConseillerDTO
+    + getConseillers() : List<ConseillerDTO>
+    + getConseiller(id : Long) : ConseillerDTO
+    + affecterClient(conseillerId : Long, clientId : Long) : void
   }
 
   class VirementController <<Controller>> {
@@ -137,6 +178,7 @@ package "Controllers" {
 
 ' Controllers -> Services
 ClientController ..> ClientService
+ConseillerController ..> ConseillerService
 VirementController ..> VirementService
 SimulationCreditController ..> SimulationCreditService
 AuditController ..> AuditService
@@ -144,6 +186,10 @@ CompteController ..> CompteService
 
 ' Services -> Repositories
 ClientService ..> ClientRepository
+ConseillerService ..> ConseillerRepository
+ConseillerService ..> AgenceRepository
+ConseillerService ..> ClientRepository
+
 CompteService ..> CompteBancaireRepository
 VirementService ..> CompteBancaireRepository
 SimulationCreditService ..> ClientRepository
